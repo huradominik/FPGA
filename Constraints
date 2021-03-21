@@ -1,1 +1,38 @@
+# Cora Z7 diods and buttons
 
+set_property  PACKAGE_PIN H16 [get_ports  clk ]
+set_property  IOSTANDARD LVCMOS33  [get_ports  clk ]
+create_clock  -name sys_clk_pin -period 8.000 -waveform {0.000 4.000} [get_ports  clk ]
+  
+
+set_property  PACKAGE_PIN D20  [get_ports  button_0 ]
+set_property  PACKAGE_PIN D19  [get_ports  button_1 ]
+set_property  IOSTANDARD LVCMOS33  [get_ports  button_0 ]
+set_property  IOSTANDARD LVCMOS33  [get_ports  button_1 ]
+
+set_property  PACKAGE_PIN N15  [get_ports  dioda_R_0 ]
+set_property  IOSTANDARD LVCMOS33  [get_ports  dioda_R_0 ]
+set_property  PACKAGE_PIN G17  [get_ports  dioda_G_0 ]
+set_property  IOSTANDARD LVCMOS33  [get_ports  dioda_G_0 ]
+set_property  PACKAGE_PIN L15  [get_ports  dioda_B_0 ]
+set_property  IOSTANDARD LVCMOS33  [get_ports  dioda_B_0 ]
+
+set_property  PACKAGE_PIN M15  [get_ports  dioda_R_1 ]
+set_property  IOSTANDARD LVCMOS33  [get_ports  dioda_R_1 ]
+set_property  PACKAGE_PIN L14  [get_ports  dioda_G_1 ]
+set_property  IOSTANDARD LVCMOS33  [get_ports  dioda_G_1 ]
+set_property  PACKAGE_PIN G14  [get_ports  dioda_B_1 ]
+set_property  IOSTANDARD LVCMOS33  [get_ports  dioda_B_1 ]
+
+#set_property SEVERITY button_0
+#set_property SEVERITY button_1
+#set_property SEVERITY dioda_0
+#set_property SEVERITY dioda_1
+
+#set_property IOSTANDARD LVCMOS18 [get_ports button_0]
+#set_property IOSTANDARD LVCMOS18 [get_ports button_1]
+#set_property IOSTANDARD LVCMOS18 [get_ports dioda_0]
+#set_property IOSTANDARD LVCMOS18 [get_ports dioda_1]
+
+#set_property SEVERITY {Warning} [get_drc_checks NSTD-1]
+#set_property SEVERITY {Warning} [get_drc_checks UCIO-1]
