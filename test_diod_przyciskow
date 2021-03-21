@@ -1,0 +1,161 @@
+----------------------------------------------------------------------------------
+-- Company: 
+-- Engineer: 
+-- 
+-- Create Date: 19.03.2021 14:20:12
+-- Design Name: 
+-- Module Name: test_diod_przyciskow - Behavioral
+-- Project Name: 
+-- Target Devices: 
+-- Tool Versions: 
+-- Description: 
+-- 
+-- Dependencies: 
+-- 
+-- Revision:
+-- Revision 0.01 - File Created
+-- Additional Comments:
+-- 
+----------------------------------------------------------------------------------
+
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.std_logic_arith.ALL;
+use IEEE.std_logic_unsigned.ALL;
+use IEEE.numeric_std.ALL;
+
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+--use IEEE.NUMERIC_STD.ALL;
+
+-- Uncomment the following library declaration if instantiating
+-- any Xilinx leaf cells in this code.
+--library UNISIM;
+--use UNISIM.VComponents.all;
+
+entity test_diod_przyciskow is
+Port(
+clk      : in std_logic;
+button_0 : in std_logic;
+button_1 : in std_logic;
+dioda_R_0  : out std_logic;
+dioda_G_0  : out std_logic;
+dioda_B_0  : out std_logic;
+dioda_R_1  : out std_logic;
+dioda_G_1  : out std_logic;
+dioda_B_1  : out std_logic;
+
+diod_RGB_0 : in std_logic_vector (2 downto 0);
+diod_RGB_1 : in std_logic_vector (2 downto 0)
+ );
+end test_diod_przyciskow;
+
+architecture Behavioral of test_diod_przyciskow is
+
+signal clk_200 : std_logic;
+
+signal butt_reg_0 : std_logic;
+signal butt_reg_1 : std_logic;
+
+signal reg_dioda_R_0 : std_logic;
+signal reg_dioda_G_0 : std_logic;
+signal reg_dioda_B_0 : std_logic;
+signal reg_dioda_R_1 : std_logic;
+signal reg_dioda_G_1 : std_logic;
+signal reg_dioda_B_1 : std_logic;
+
+signal RGB_reg : std_logic_vector (2 downto 0) := "111";
+
+--signal d_reg_0 : std_logic;
+--signal d_reg_1 : std_logic;
+
+component Prescaler_200Hz
+port(clk_in : in std_logic;
+    clk_out : out std_logic);
+end component;
+
+component RBG_PWM
+port( clk    : in std_logic;
+-- DIODS INPUTS --
+diod_r_in : in std_logic;
+diod_g_in : in std_logic;
+diod_b_in : in std_logic;
+-- DIODS OUTPUTS
+diod_r_out : out std_logic;
+diod_g_out : out std_logic;
+diod_b_out : out std_logic);
+end component;
+     
+begin
+
+Prescaler_200 : Prescaler_200Hz port map(clk_in => clk, clk_out => clk_200);
+
+
+shift_RGB_1 : process(clk)
+variable counter : natural range 0 to 20000000;
+begin
+if(rising_edge(clk)) then
+counter := counter + 1;
+if(counter = 19999999) then
+counter := 0;
+
+RGB_reg <= RGB_reg - '1'; 
+    
+end if;
+end if;
+
+end process;
+
+debounder_button_0 : process(clk, button_0)
+
+variable count : integer range 0 to 100000;
+begin
+if(rising_edge(clk)) then
+if(button_0 = '1') then 
+count := count+1;
+end if;
+    if(count = 10000) then
+    butt_reg_0 <= not butt_reg_0;
+    count := 0;
+    end if;
+end if;
+end process;
+
+debounder_button_1 : process(clk, button_1)
+variable count : integer range 0 to 100000;
+begin
+if(rising_edge(clk)) then
+if(button_1 = '1') then 
+count := count+1;
+    if(count = 1000) then
+    butt_reg_1 <= not butt_reg_1;
+    count := 0;
+    end if;
+end if;
+end if;
+end process;
+
+
+rgb_pwm_0 : RBG_PWM port map(clk => clk_200, diod_r_in => butt_reg_0, 
+                             diod_g_in => butt_reg_1, diod_b_in => '0', 
+                             diod_r_out => dioda_R_0, diod_g_out => dioda_G_0,
+                             diod_b_out => dioda_B_0);
+                             
+rgb_pwm_1 : RBG_PWM port map(clk => clk_200, diod_r_in => RGB_reg(0),
+                             diod_g_in => RGB_reg(1), diod_b_in => RGB_reg(0),
+                             diod_r_out => dioda_R_1,diod_g_out => dioda_G_1,
+                             diod_b_out => dioda_B_1);
+--dioda_R_0 <= butt_reg_0;
+--dioda_G_0 <= butt_reg_1;
+--dioda_B_0 <= '0';
+
+--dioda_R_1 <= RGB_reg(0);
+--dioda_G_1 <= RGB_reg(1);
+--dioda_B_1 <= RGB_reg(2);
+
+
+
+
+
+end Behavioral;
