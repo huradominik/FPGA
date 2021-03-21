@@ -1,0 +1,70 @@
+----------------------------------------------------------------------------------
+-- Company: 
+-- Engineer: 
+-- 
+-- Create Date: 21.03.2021 15:54:13
+-- Design Name: 
+-- Module Name: Prescaler_200Hz - Behavioral
+-- Project Name: 
+-- Target Devices: 
+-- Tool Versions: 
+-- Description: 
+-- 
+-- Dependencies: 
+-- 
+-- Revision:
+-- Revision 0.01 - File Created
+-- Additional Comments:
+-- 
+----------------------------------------------------------------------------------
+
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+--use IEEE.NUMERIC_STD.ALL;
+
+-- Uncomment the following library declaration if instantiating
+-- any Xilinx leaf cells in this code.
+--library UNISIM;
+--use UNISIM.VComponents.all;
+
+entity Prescaler_200Hz is
+Port(
+clk_in : in std_logic; -- 125 MHz
+clk_out : out std_logic 
+);
+end Prescaler_200Hz;
+
+architecture Behavioral of Prescaler_200Hz is
+
+signal clk_in_reg : std_logic;
+signal clk_out_reg : std_logic;
+
+signal count : natural range 0 to 62501;
+
+begin
+
+process(clk_in)
+begin
+
+if(rising_edge(clk_in)) then
+count <= count + 1;
+
+if(count <= 31250) then
+clk_out_reg <= '0';
+elsif(count > 31250 and count < 62500) then
+clk_out_reg <= '1';
+else
+count <= 0;
+clk_out_reg <= '0';
+end if;
+--end process;
+end if;
+end process;
+
+clk_out <= clk_out_reg;
+
+end Behavioral;
