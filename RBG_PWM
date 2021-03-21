@@ -1,0 +1,101 @@
+----------------------------------------------------------------------------------
+-- Company: 
+-- Engineer: 
+-- 
+-- Create Date: 21.03.2021 15:19:01
+-- Design Name: 
+-- Module Name: RBG_PWM - Behavioral
+-- Project Name: 
+-- Target Devices: 
+-- Tool Versions: 
+-- Description: 
+-- 
+-- Dependencies: 
+-- 
+-- Revision:
+-- Revision 0.01 - File Created
+-- Additional Comments:
+-- 
+----------------------------------------------------------------------------------
+
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.std_logic_unsigned;
+
+
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+--use IEEE.NUMERIC_STD.ALL;
+
+-- Uncomment the following library declaration if instantiating
+-- any Xilinx leaf cells in this code.
+--library UNISIM;
+--use UNISIM.VComponents.all;
+
+entity RBG_PWM is
+Port(
+-- CLK  200HZ--
+clk    : in std_logic;
+-- DIODS INPUTS --
+diod_r_in : in std_logic;
+diod_g_in : in std_logic;
+diod_b_in : in std_logic;
+-- DIODS OUTPUTS
+diod_r_out : out std_logic;
+diod_g_out : out std_logic;
+diod_b_out : out std_logic
+
+-- pwm_pulse_value : in std_logic_vector (2 downto 0) 
+);
+end RBG_PWM;
+
+architecture Behavioral of RBG_PWM is
+
+signal diod_r_reg_in : std_logic;
+signal diod_g_reg_in : std_logic;
+signal diod_b_reg_in : std_logic;
+
+signal diod_r_reg_out : std_logic;
+signal diod_g_reg_out : std_logic;
+signal diod_b_reg_out : std_logic;
+
+begin
+
+diod_r_reg_in <= diod_r_in;
+diod_g_reg_in <= diod_g_in;
+diod_b_reg_in <= diod_b_in;
+
+process(clk, diod_r_reg_in, diod_g_reg_in, diod_b_reg_in)
+variable count_1_2 : natural range 0 to 10 := 0;
+
+begin
+
+if(rising_edge (clk)) then
+
+     
+
+    if(diod_r_reg_in = '1' and count_1_2 <= 3) then
+    diod_r_reg_out <= '1';
+    else diod_r_reg_out <= '0';
+    end if;
+    
+    if(diod_g_reg_in = '1' and count_1_2 <= 3) then
+    diod_g_reg_out <= '1';
+    else diod_g_reg_out <= '0';
+    end if;
+    
+    if(diod_b_reg_in = '1' and count_1_2 <= 3) then
+    diod_b_reg_out <= '1';
+    else diod_b_reg_out <= '0';
+    end if;
+    if(count_1_2 = 10) then count_1_2 := 0; end if;       
+count_1_2 := count_1_2 + 1;
+end if;
+end process;
+
+diod_r_out <= diod_r_reg_out;
+diod_g_out <= diod_g_reg_out;
+diod_b_out <= diod_b_reg_out;
+
+end Behavioral;
