@@ -24,6 +24,14 @@ set_property  IOSTANDARD LVCMOS33  [get_ports  dioda_G_1 ]
 set_property  PACKAGE_PIN G14  [get_ports  dioda_B_1 ]
 set_property  IOSTANDARD LVCMOS33  [get_ports  dioda_B_1 ]
 
+# UART PS
+#MIO 500 3,3V  --c5 rx , c8 tx
+#set_property PACKAGE_PIN C5 [get_ports uart_rtl_0_rxd]
+#set_property IOSTANDARD LVCMOS33 [get_ports uart_rtl_0_rxd]
+#set_property PACKAGE_PIN C8 [get_ports uart_rtl_0_txd]
+#set_property IOSTANDARD LVCMOS33 [get_ports uart_rtl_0_txd]
+
+
 #set_property SEVERITY button_0
 #set_property SEVERITY button_1
 #set_property SEVERITY dioda_0
