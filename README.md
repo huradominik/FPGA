@@ -1,11 +1,15 @@
-# FPGA
+# FPGA 
 
 Constraints files: Cora Z7
 
-TODO: PWM to decrease intensivity of diods [*]
+[*] PWM to decrease intensivity of diods [*]
+[*] Debouncers for buttons [*]
+[*] Implement ZYNQ
+[*] Test simple AXI with diodes and buttons with ZYNQ/MicroBraze controlls
 
-TODO: Debouncers for buttons [*]
+TODO: 
+[] timers
+[] small compute with PS -> PL -> PS -> UART
+[] LCD controll
+[] ...
 
-TODO: implement MicroBlaze
-
-TODO: Test simple AXI with diodes and buttons with MicroBraze controlls
